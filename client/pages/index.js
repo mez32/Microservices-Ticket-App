@@ -1,15 +1,18 @@
 import React from 'react'
-import axios from 'axios'
+import buildClient from '../api/buildClient'
 
 const index = ({ currentUser }) => {
-	console.log(currentUser)
-	return <div>Landing Page</div>
+	return currentUser ? <h1>You are signed in</h1> : <h1>You are NOT signed in</h1>
 }
 
-index.getInitialProps = async () => {
-	const response = await axios.get('/api/users/currentuser')
+index.getInitialProps = async (context) => {
+	console.log('landing page')
+	const client = buildClient(context)
 
-	return response.data
+	const { data } = await client.get('/api/users/currentuser').catch((err) => {
+		console.log(err)
+	})
+	return data
 }
 
 export default index

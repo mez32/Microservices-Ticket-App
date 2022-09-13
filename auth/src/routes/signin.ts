@@ -2,8 +2,7 @@ import express, { Request, Response } from 'express'
 import { body } from 'express-validator'
 import jwt from 'jsonwebtoken'
 
-import { BadRequestError } from '../errors/badRequestError'
-import { validateRequest } from '../middlewares/validateRequest'
+import { BadRequestError, validateRequest } from '@meztickets/common'
 import { User } from '../models/user'
 import { Password } from '../services/password'
 

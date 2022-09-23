@@ -4,6 +4,7 @@ import {
 	NotFoundError,
 	OrderStatus,
 	requireAuth,
+	Subjects,
 	validateRequest,
 } from '@meztickets/common'
 import { body } from 'express-validator'
@@ -11,6 +12,8 @@ import { body } from 'express-validator'
 import { Ticket } from '../models/ticket'
 import { Order } from '../models/order'
 import mongoose from 'mongoose'
+import { OrderCreatedPublisher } from '../events/publishers/orderCreatedPublisher'
+import { natsWrapper } from '../natsWrapper'
 
 const EXPIRATION_WINDOW_SECONDS = 15 * 60
 
@@ -51,6 +54,16 @@ router.post(
 		})
 
 		await order.save()
+		new OrderCreatedPublisher(natsWrapper.client).publish({
+			id: order.id,
+			status: order.status,
+			userId: req.currentUser!.id,
+			expiresAt: order.expiresAt.toISOString(),
+			ticket: {
+				id: ticket.id,
+				price: ticket.price,
+			},
+		})
 
 		res.status(201).send(order)
 	}

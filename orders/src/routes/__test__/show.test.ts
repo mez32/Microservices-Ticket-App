@@ -26,7 +26,7 @@ it('fetches the order', async () => {
 	expect(fetchedOrder.id).toEqual(order.id)
 })
 
-it('returns an error if a user tries to fetch another users order', async () => {
+it('returns an error if a  user tries to fetch another users order', async () => {
 	const ticket = Ticket.build({
 		title: 'Concert',
 		price: 20,

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 
 import { app } from './app'
+import { ExpirationCompleteListener } from './events/listeners/expirationCompleteListener'
 import { TicketCreatedListener } from './events/listeners/ticketCreatedListener'
 import { TicketUpdatedListener } from './events/listeners/ticketUpdatedListener'
 import { natsWrapper } from './natsWrapper'
@@ -34,6 +35,7 @@ const start = async () => {
 
 		new TicketCreatedListener(natsWrapper.client).listen()
 		new TicketUpdatedListener(natsWrapper.client).listen()
+		new ExpirationCompleteListener(natsWrapper.client).listen()
 
 		await mongoose.connect(process.env.MONGO_URI)
 		console.log('Connected to MongoDb - orders ')

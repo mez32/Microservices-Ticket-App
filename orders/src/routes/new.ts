@@ -15,7 +15,7 @@ import mongoose from 'mongoose'
 import { OrderCreatedPublisher } from '../events/publishers/orderCreatedPublisher'
 import { natsWrapper } from '../natsWrapper'
 
-const EXPIRATION_WINDOW_SECONDS = 15 * 60
+const EXPIRATION_WINDOW_SECONDS = 1 * 60
 
 const router = express.Router()
 
